@@ -1,4 +1,6 @@
-import { Product } from "./types/Product";
+import { User } from "./models/userModel";
+import { Product } from "./models/productModel";
+import bcrypt from "bcryptjs";
 
 export const sampleProduct: Product[] = [
   {
@@ -48,5 +50,62 @@ export const sampleProduct: Product[] = [
     rating: 4.5,
     numReviews: 10,
     description: "high quality product",
+  },
+  {
+    name: "puma fit pants",
+    slug: "puma-fit-shirt",
+    category: "shirt",
+    image: "../images/p5.jpg",
+    price: 50,
+    countInStock: 0,
+    brand: "puma",
+    rating: 4.5,
+    numReviews: 10,
+    description: "high quality product",
+  },
+  {
+    name: "lv fit shirt",
+    slug: "lv-fit-shirt",
+    category: "shirt",
+    image: "../images/p5.jpg",
+    price: 500,
+    countInStock: 1,
+    brand: "lv",
+    rating: 4.8,
+    numReviews: 1,
+    description: "high quality product",
+  },
+  {
+    name: "p fit shirt",
+    slug: "p-fit-shirt",
+    category: "shirt",
+    image: "../images/p1.jpg",
+    price: 300,
+    countInStock: 1,
+    brand: "p",
+    rating: 4.8,
+    numReviews: 1,
+    description: "high quality product",
+  },
+];
+
+export const sampleUsers: User[] = [
+  {
+    name: "Joe",
+    email: "admin@example.com",
+    password: bcrypt.hashSync("123456"),
+    isAdmin: true,
+  },
+  {
+    name: "Jane",
+    email: "user1@example.com",
+    password: bcrypt.hashSync("123456"),
+    isAdmin: false,
+  },
+  {
+    name: "Jane",
+    email: "user2@example.com",
+    password: bcrypt.hashSync("123456"),
+    isAdmin: false,
   },
 ];

@@ -6,17 +6,20 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import { productRouter } from "./routers/productRouter";
 import { seedRouter } from "./routers/seedRouter";
-// import { productRouter } from "./routers/productRouter";
-// import { seedRouter } from "./routers/seedRouter";
+import { userRouter } from "./routers/userRouter";
+import { orderRouter } from "./routers/orderRouter";
 
 dotenv.config();
 
 const app = express();
 app.use(cors());
-app.use("/api/products", productRouter);
-app.use("/api/seed", seedRouter);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/products", productRouter);
+app.use("/api/seed", seedRouter);
+app.use("/api/users", userRouter);
+app.use("/api/orders", orderRouter);
 
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/amazona";
 mongoose.set("strictQuery", true);

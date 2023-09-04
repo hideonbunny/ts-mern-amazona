@@ -49,4 +49,16 @@ export const sampleProduct: Product[] = [
     numReviews: 10,
     description: "high quality product",
   },
+  {
+    name: "Adidas fit pants",
+    slug: "adidas-fit-pants",
+    category: "Pants",
+    image: "../images/p5.jpg",
+    price: 30,
+    countInStock: 0,
+    brand: "Adidas",
+    rating: 4.5,
+    numReviews: 10,
+    description: "high quality product",
+  },
 ];

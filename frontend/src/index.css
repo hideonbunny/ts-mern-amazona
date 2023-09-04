@@ -11,6 +11,7 @@
 .product-image {
   max-width: 400px;
   width: 100%;
+  max-height: 280px;
 }
 
 .rating span {
@@ -18,4 +19,25 @@
 }
 img.large {
   max-width: 100%;
+}
+
+img.thumbnail {
+  height: 80px;
+}
+.small-container {
+  max-width: 600px;
+}
+
+.checkout-steps > div {
+  border-bottom: 0.2rem solid #a0a0a0;
+  color: #a0a0a0;
+}
+.checkout-steps > div.active {
+  border-bottom: 0.2rem solid #f08000;
+  color: #f08000;
+}
+
+.dropdown-menu[data-bs-popper] {
+  left: auto;
+  right: 0;
 }
