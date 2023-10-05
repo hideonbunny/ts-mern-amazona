@@ -8,6 +8,7 @@ import { productRouter } from "./routers/productRouter";
 import { seedRouter } from "./routers/seedRouter";
 import { userRouter } from "./routers/userRouter";
 import { orderRouter } from "./routers/orderRouter";
+import { categoryRouter } from "./routers/categoryRouter";
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use("/api/products", productRouter);
 app.use("/api/seed", seedRouter);
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
+app.use("/api/categories", categoryRouter);
 
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/amazona";
 mongoose.set("strictQuery", true);

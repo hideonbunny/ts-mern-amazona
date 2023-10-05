@@ -24,6 +24,13 @@ import ProtectedRoute from "./components/ProtectedRoute.tsx";
 import PlaceOrderPage from "./pages/PlaceOrderPage.tsx";
 import OrderPage from "./pages/OrderPage.tsx";
 import OrderHistoryPage from "./pages/OrderHistoryPage.tsx";
+import CategoryPage from "./pages/CategoryPage.tsx";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(
+  "pk_test_51Nv2KIL4EXhnCoIc9pET7UvF4630qV8GSflLkNcI87C6ixMeGYzulef888GKBbtruj5KPHblHt4FHIZzN4ipxQki00VMAkzGAS"
+);
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,14 +38,15 @@ const router = createBrowserRouter(
       <Route index={true} element={<HomePage />} />
       <Route path="product/:slug" element={<ProductPage />} />
       <Route path="cart" element={<CartPage />} />
-      <Route path="signin" element={<SigninPage />} />
-      <Route path="signup" element={<SignupPage />} />
+      <Route path="signin/" element={<SigninPage />} />
+      <Route path="signup/" element={<SignupPage />} />
       <Route path="" element={<ProtectedRoute />}>
         <Route path="shipping" element={<ShippingAddressPage />} />
         <Route path="payment" element={<PaymentMethodPage />} />
         <Route path="placeorder" element={<PlaceOrderPage />} />
         <Route path="/order/:id" element={<OrderPage />} />
         <Route path="/orderhistory" element={<OrderHistoryPage />} />
+        <Route path="/category/:category" element={<CategoryPage />}></Route>
       </Route>
     </Route>
   )
@@ -48,10 +56,13 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <StoreProvider>
       <HelmetProvider>
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
+        <Elements stripe={stripePromise}>
+          <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router} />
+
+            <ReactQueryDevtools initialIsOpen={false} />
+          </QueryClientProvider>
+        </Elements>
       </HelmetProvider>
     </StoreProvider>
   </React.StrictMode>

@@ -1,15 +1,16 @@
 export type CartItem = {
+  _id: string;
   image: string | undefined;
   slug: string;
   quantity: number;
   countInStock: number;
   price: number;
-  _id: string;
+
   name: string;
 };
 
 export type ShippingAddress = {
-  fullName: string;
+  fullname: string;
   address: string;
   city: string;
   country: string;

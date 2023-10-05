@@ -19,7 +19,7 @@ export default function ShippingAddressPage() {
     }
   }, [userInfo, navigate]);
 
-  const [fullName, setFullName] = useState(shippingAddress.fullName || "");
+  const [fullname, setFullName] = useState(shippingAddress.fullname || "");
   const [address, setAddress] = useState(shippingAddress.address || "");
   const [city, setCity] = useState(shippingAddress.city || "");
   const [postalCode, setPostalCode] = useState(
@@ -32,7 +32,7 @@ export default function ShippingAddressPage() {
     dispatch({
       type: "SAVE_SHIPPING_ADDRESS",
       payload: {
-        fullName,
+        fullname,
         address,
         city,
         postalCode,
@@ -42,7 +42,7 @@ export default function ShippingAddressPage() {
     localStorage.setItem(
       "shippingAddress",
       JSON.stringify({
-        fullName,
+        fullname,
         address,
         city,
         postalCode,
@@ -62,10 +62,10 @@ export default function ShippingAddressPage() {
       <div className="container small-container">
         <h1 className="my-3">Shipping Address</h1>
         <Form onSubmit={submitHandler}>
-          <Form.Group className="mb-3" controlId="fullName">
+          <Form.Group className="mb-3" controlId="fullname">
             <Form.Label>Full Name</Form.Label>
             <Form.Control
-              value={fullName}
+              value={fullname}
               onChange={(e) => setFullName(e.target.value)}
               required
             />

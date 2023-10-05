@@ -22,7 +22,7 @@ export const useCreateOrderMutation = () =>
     }) =>
       (
         await apiClient.post<{ message: string; order: Order }>(
-          `api/orders`,
+          `api/orders/`,
           order
         )
       ).data,
@@ -32,5 +32,5 @@ export const useGetOrderHistoryQuery = () =>
   useQuery({
     queryKey: ["order-history"],
     queryFn: async () =>
-      (await apiClient.get<Order[]>(`/api/orders/mine`)).data,
+      (await apiClient.get<Order[]>(`/api/orders/mine/`)).data,
   });

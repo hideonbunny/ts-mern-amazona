@@ -85,7 +85,7 @@ function reducer(state: AppState, action: Action): AppState {
           cartItems: [],
           paymentMethod: "PayPal",
           shippingAddress: {
-            fullName: "",
+            fullname: "",
             address: "",
             postalCode: "",
             city: "",

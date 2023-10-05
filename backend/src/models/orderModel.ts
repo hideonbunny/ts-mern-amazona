@@ -9,7 +9,7 @@ import { Product } from "./productModel";
 
 class ShippingAddress {
   @prop()
-  public fullName?: string;
+  public fullname?: string;
   @prop()
   public address?: string;
   @prop()

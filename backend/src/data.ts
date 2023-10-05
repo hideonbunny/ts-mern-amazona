@@ -54,7 +54,7 @@ export const sampleProduct: Product[] = [
   {
     name: "puma fit pants",
     slug: "puma-fit-shirt",
-    category: "shirt",
+    category: "Shirts",
     image: "../images/p5.jpg",
     price: 50,
     countInStock: 0,
@@ -66,7 +66,7 @@ export const sampleProduct: Product[] = [
   {
     name: "lv fit shirt",
     slug: "lv-fit-shirt",
-    category: "shirt",
+    category: "Shirts",
     image: "../images/p5.jpg",
     price: 500,
     countInStock: 1,
@@ -78,7 +78,7 @@ export const sampleProduct: Product[] = [
   {
     name: "p fit shirt",
     slug: "p-fit-shirt",
-    category: "shirt",
+    category: "Shirts",
     image: "../images/p1.jpg",
     price: 300,
     countInStock: 1,

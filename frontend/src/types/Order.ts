@@ -3,7 +3,7 @@ import { User } from "./User";
 
 export type Order = {
   _id: string;
-  orderItems: CartItem[];
+  order_items: CartItem[];
   shippingAddress: ShippingAddress;
   paymentMethod: string;
   user: User;
@@ -12,7 +12,7 @@ export type Order = {
   paidAt: string;
   isDelivered: boolean;
   deliveredAt: string;
-  itemsPrice: number;
+  itemPrice: number;
   shippingPrice: number;
   taxPrice: number;
   totalPrice: number;

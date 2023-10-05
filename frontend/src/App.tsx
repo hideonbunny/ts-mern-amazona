@@ -13,6 +13,7 @@ import { Link, Outlet } from "react-router-dom";
 import { Store } from "./Store";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useGetProductsQuery } from "./hooks/productHooks";
 
 function App() {
   const {
@@ -37,6 +38,21 @@ function App() {
     window.location.href = "/signin";
   };
 
+  const { data: products, isLoading } = useGetProductsQuery();
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+  const categorylist: Array<string> = products!.reduce(
+    (a: Array<string>, c) => {
+      if (!a.includes(c.category)) {
+        a.push(c.category);
+      }
+      return a;
+    },
+    []
+  );
+
   return (
     <div className="d-flex flex-column vh-100">
       <ToastContainer position="bottom-center" limit={1} />
@@ -48,6 +64,18 @@ function App() {
             </LinkContainer>
           </Container>
           <Nav>
+            <NavDropdown
+              title="Shop by category"
+              id="basic-nav-dropdown"
+              className="dropdown-menu-start"
+            >
+              {categorylist.map((category) => (
+                <LinkContainer to={`/category/${category}`} key={category}>
+                  <NavDropdown.Item>{`${category}`}</NavDropdown.Item>
+                </LinkContainer>
+              ))}
+            </NavDropdown>
+
             <Button variant={mode} onClick={switchModeHandler}>
               <i className={mode === "light" ? "fa fa-sun" : "fa fa-moon"}></i>
             </Button>
@@ -61,7 +89,7 @@ function App() {
             </Link>
             {userInfo ? (
               <NavDropdown
-                title={userInfo.name}
+                title={userInfo.first_name}
                 id="basic-nav-dropdown"
                 className="dropdown-menu-start"
               >

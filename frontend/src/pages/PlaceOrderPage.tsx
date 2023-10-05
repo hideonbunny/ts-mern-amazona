@@ -9,9 +9,17 @@ import { useCreateOrderMutation } from "../hooks/orderHooks";
 import { Store } from "../Store";
 import { ApiError } from "../types/ApiError";
 import { getError } from "../utils";
+import { useFetchClientSecret, useFetchPayment } from "../hooks/paymentHooks";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import apiClient from "../apiClient";
 
 export default function PlaceOrderPage() {
   const navigate = useNavigate();
+  const stripe = useStripe();
+  const elements = useElements();
+  const cardElement = elements?.getElement(CardElement);
+  const fetchClientSecretMutation = useFetchClientSecret();
+  const fetchPaymentMutation = useFetchPayment();
 
   const { state, dispatch } = useContext(Store);
   //const { cart, userInfo } = state;
@@ -30,7 +38,8 @@ export default function PlaceOrderPage() {
 
   const placeOrderHandler = async () => {
     try {
-      const data = await createOrder({
+      // Step 1: Create the order
+      const orderResponse = await createOrder({
         orderItems: cart.cartItems,
         shippingAddress: cart.shippingAddress,
         paymentMethod: cart.paymentMethod,
@@ -40,9 +49,53 @@ export default function PlaceOrderPage() {
         totalPrice: cart.totalPrice,
       });
 
-      dispatch({ type: "CART_CLEAR" });
-      localStorage.removeItem("cartItems");
-      navigate(`/order/${data.order._id}`);
+      // Check if orderResponse was successful and contains the expected data
+      if (orderResponse && orderResponse.order && orderResponse.order._id) {
+        // Step 2: Fetch the client secret using the created order's ID
+        const clientSecretResponse =
+          await fetchClientSecretMutation.mutateAsync(orderResponse.order._id);
+
+        const clientSecretFromBackend = clientSecretResponse.clientSecret;
+
+        if (!stripe || !cardElement) {
+          return;
+        }
+
+        // Step 3: Process the payment
+        const result = await stripe.confirmCardPayment(
+          clientSecretFromBackend,
+          {
+            payment_method: {
+              card: cardElement,
+            },
+          }
+        );
+
+        if (result.error) {
+          console.log("errorrrrrrrr!!!");
+          toast.error(result.error.message);
+        } else {
+          if (result.paymentIntent.status === "succeeded") {
+            const paymentResponse = await fetchPaymentMutation.mutateAsync(
+              orderResponse.order._id
+            );
+
+            if (
+              paymentResponse.message ===
+              "Order has been successfully marked as paid"
+            ) {
+              dispatch({ type: "CART_CLEAR" });
+              localStorage.removeItem("cartItems");
+              navigate(`/order/${orderResponse.order._id}`);
+            } else {
+              console.error("Failed to mark the order as paid");
+            }
+          } else {
+            // Handle error from order creation here
+            console.log("Error creating order");
+          }
+        }
+      }
     } catch (err) {
       toast.error(getError(err as ApiError));
     }
@@ -67,7 +120,7 @@ export default function PlaceOrderPage() {
             <Card.Body>
               <Card.Title>Shipping</Card.Title>
               <Card.Text>
-                <strong>Name:</strong> {cart.shippingAddress.fullName} <br />
+                <strong>Name:</strong> {cart.shippingAddress.fullname} <br />
                 <strong>Address: </strong> {cart.shippingAddress.address},
                 {cart.shippingAddress.city}, {cart.shippingAddress.postalCode},
                 {cart.shippingAddress.country}
@@ -148,6 +201,9 @@ export default function PlaceOrderPage() {
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <div className="d-grid">
+                    <CardElement
+                      options={{ style: { base: { fontSize: "16px" } } }}
+                    />
                     <Button
                       type="button"
                       onClick={placeOrderHandler}
